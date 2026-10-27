@@ -28,6 +28,14 @@ function Todos() {
     setTodos(todos.filter((todo) => todo.id !== id))
   }
 
+  function handleClearCompleted() {
+  setTodos(todos.filter((todo) => !todo.completed))
+}
+
+function handleToggleAll() {
+  setTodos(todos.map((todo) => ({ ...todo, completed: !allCompleted })))
+}
+
   const activeCount = todos.filter((todo) => !todo.completed).length
   const completedCount = todos.length - activeCount
   const allCompleted = todos.length > 0 && todos.every((todo) => todo.completed)
@@ -66,10 +74,11 @@ function Todos() {
                     className="group relative flex items-center border-b border-[#ededed] text-2xl"
                   >
                     <input
-                      type="checkbox"
-                      checked={todo.completed}
-                      onChange={() => handleToggle(todo.id)}
-                      className="ml-[15px] size-[30px] shrink-0 cursor-pointer accent-[#59a193]"
+                        id="toggle-all"
+                        type="checkbox"
+                        checked={allCompleted}
+                        onChange={handleToggleAll}
+                        className="peer sr-only"
                     />
                     <span
                       className={
@@ -123,9 +132,15 @@ function Todos() {
                   </button>
                 </li>
               </ul>
-              <button type="button" className="cursor-pointer justify-self-end hover:underline">
-                Clear completed
-              </button>
+              {completedCount > 0 && (
+                <button
+                    type="button"
+                    onClick={handleClearCompleted}
+                    className="cursor-pointer justify-self-end hover:underline"
+                >
+                    Clear completed
+                </button>
+                )}
             </footer>
           </>
         )}
